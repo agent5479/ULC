@@ -14,12 +14,12 @@ Marketing site for **Unlimited Copies Takaka** — commercial printer and postal
 
 ## Contact form status
 
-Form UI is live on the site. Sending needs the Apps Script gateway:
+Form UI is live. Mail gateway is wired via GitHub Actions secret `VITE_GAS_WEBAPP_URL`:
 
 - **From (gateway):** unlimitedcopies07@gmail.com  
 - **To (shop inbox):** ulc@actrix.co.nz  
 
-Deploy steps: [`apps-script/README.md`](./apps-script/README.md). Then set GitHub Actions secret `VITE_GAS_WEBAPP_URL` and redeploy.
+Deploy / rotate the Apps Script URL: [`apps-script/README.md`](./apps-script/README.md). After changing the secret, re-run **Deploy to GitHub Pages**.
 
 ## Local development
 
