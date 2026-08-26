@@ -1,6 +1,6 @@
 # Unlimited Copies Takaka
 
-Marketing site for **Unlimited Copies Takaka** — commercial printer and postal pickup/drop-off at 29 Commercial Street, Takaka.
+Marketing site for **Unlimited Copies Takaka** — commercial printer at 29 Commercial Street, Takaka (also NZ Couriers / Post Haste agent).
 
 - Live: https://unlimitedcopies.co.nz/
 - Email: ulc@actrix.co.nz
@@ -11,6 +11,10 @@ Marketing site for **Unlimited Copies Takaka** — commercial printer and postal
 - Vite + React + TypeScript (static)
 - Deploy: GitHub Actions → GitHub Pages
 - Contact form mailer: [Google Apps Script](./apps-script/README.md) via **GitHub Actions secret**
+
+## Print enquiry builder
+
+The `#print` section lets visitors choose job type, paper, size, colour, sides, finishing, and quantity. **Apply to enquiry form** fills the contact message (no live prices yet — structure ready for a later pricelist). UX inspired by GBTech `sim-demos` estimate wizards.
 
 ## Contact form status
 

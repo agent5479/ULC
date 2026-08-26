@@ -11,7 +11,7 @@ export function getJsonLdGraph() {
     name: BUSINESS.name,
     alternateName: BUSINESS.legalName,
     description:
-      'Commercial printer and copy shop in Takaka, Tasman. Printing, scanning, finishing, and postal courier pickup/drop-off (gold coin fee — not an RD address).',
+      'Commercial printer and copy shop in Takaka, Tasman. Printing, scanning, finishing, business cards, posters, and higher-quality prints. Also New Zealand Couriers and Post Haste agent ($2 pickup fee — street address, not RD).',
     url: SITE_URL,
     email: BUSINESS.email,
     telephone: BUSINESS.phoneE164,
@@ -71,7 +71,7 @@ export function getJsonLdGraph() {
     '@id': POSTAL_SERVICE_ID,
     name: 'Postal and courier pickup in Takaka',
     description:
-      'Courier pickup and drop-off point on Commercial Street (street address, not Rural Delivery). Gold-coin fee for pickup use — often cheaper than RD courier rates.',
+      'New Zealand Couriers and Post Haste agent. Address parcels c/o Unlimited Copies, 29 Commercial Street, Takaka. $2 pickup fee — street address (not Rural Delivery) often avoids RD surcharges.',
     provider: { '@id': BUSINESS_ID },
     areaServed: {
       '@type': 'City',

@@ -7,6 +7,7 @@ import {
   GAS_WEBAPP_URL,
   MAX_ATTACHMENTS_BYTES,
 } from '../config'
+import { useEnquiry } from '../enquiryContext'
 
 type Status = 'idle' | 'sending' | 'success' | 'error'
 
@@ -42,6 +43,7 @@ function readFileAsBase64(file: File): Promise<FilePayload> {
 
 export function ContactForm() {
   const formId = useId()
+  const { message, setMessage } = useEnquiry()
   const [status, setStatus] = useState<Status>('idle')
   const [errorMessage, setErrorMessage] = useState('')
   const [files, setFiles] = useState<File[]>([])
@@ -151,6 +153,7 @@ export function ContactForm() {
 
       setStatus('success')
       form.reset()
+      setMessage('')
       setFiles([])
     } catch {
       setStatus('error')
@@ -267,15 +270,22 @@ export function ContactForm() {
           </div>
 
           <div className="field">
-            <label htmlFor={`${formId}-message`}>Message</label>
+            <label htmlFor="enquiry-message">Message</label>
             <textarea
-              id={`${formId}-message`}
+              id="enquiry-message"
               name="message"
-              rows={5}
+              rows={7}
               required
               disabled={sending}
-              placeholder="What do you need printed, scanned, or posted?"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="What do you need printed? Or use Build a print enquiry above to fill this in."
             />
+            <p className="field-hint">
+              Tip: use{' '}
+              <a href="#print">Build a print enquiry</a> to fill paper, size, and finishing
+              details automatically.
+            </p>
           </div>
 
           <div className="field">

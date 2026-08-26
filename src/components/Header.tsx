@@ -54,6 +54,9 @@ export function Header() {
           <a href="#services" onClick={close}>
             Services
           </a>
+          <a href="#print" onClick={close}>
+            Print enquiry
+          </a>
           <a href="#visit" onClick={close}>
             Visit
           </a>

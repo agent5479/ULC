@@ -26,11 +26,14 @@ export function Hero() {
           {BUSINESS.name}
         </h1>
         <p className="hero__tagline">
-          {BUSINESS.tagline} — printing, scanning, and courier pickup at 29 Commercial
-          Street (not an RD address).
+          {BUSINESS.tagline} — copies, scanning, finishing, business cards, posters, and more at
+          29 Commercial Street, Takaka.
         </p>
         <div className="hero__actions">
-          <a className="btn btn--primary" href={`mailto:${BUSINESS.email}`}>
+          <a className="btn btn--primary" href="#print">
+            Build a print enquiry
+          </a>
+          <a className="btn btn--ghost" href={`mailto:${BUSINESS.email}`}>
             Email {BUSINESS.email}
           </a>
           <a className="btn btn--ghost" href={`tel:${BUSINESS.phoneE164}`}>

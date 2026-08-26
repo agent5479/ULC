@@ -14,7 +14,7 @@ export function Visit() {
           <h2 id="visit-heading">Where is Unlimited Copies in Takaka?</h2>
           <p className="lede">
             We are at 29 Commercial Street in central Takaka — open weekdays 9:00 AM to
-            5:00 PM. Call, email, or drop in for printing, scanning, or postal pickup.
+            5:00 PM. Call, email, or drop in for printing and scanning.
           </p>
 
           <dl className="visit__details">
