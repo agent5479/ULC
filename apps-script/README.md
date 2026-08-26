@@ -1,31 +1,41 @@
 # Google Apps Script mailer
 
-The contact form posts JSON (including base64 file attachments) to a Google Apps Script web app, which emails **ulc@actrix.co.nz**.
+Contact form → **unlimitedcopies07@gmail.com** (sending gateway) → **ulc@actrix.co.nz** (inbox), with file attachments.
 
-## Deploy
+## Deploy (must use the gateway Gmail)
 
-1. Open [script.google.com](https://script.google.com) and create a **New project**.
-2. Rename it (e.g. `ULC contact form`).
-3. Replace the default `Code.gs` contents with [`Code.gs`](./Code.gs) from this folder.
-4. Click **Deploy → New deployment**.
-5. Type: **Web app**.
-6. Settings:
-   - **Execute as:** Me
-   - **Who has access:** Anyone
-7. Deploy and **copy the Web app URL** (ends with `/exec`).
-8. Add the Web app URL as a **GitHub Actions secret** named `VITE_GAS_WEBAPP_URL` (repo → Settings → Secrets and variables → Actions). The deploy workflow injects it at build time.
-9. Optional for local preview: copy `.env.example` to `.env` and set the same URL, then restart `npm run dev`.
+1. Sign in to Google as **unlimitedcopies07@gmail.com**.
+2. Open [script.google.com](https://script.google.com) → **New project**.
+3. Name it e.g. `ULC website contact`.
+4. Replace `Code.gs` with [`Code.gs`](./Code.gs) from this folder.
+5. **Deploy → New deployment → Web app**
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+6. Authorise Gmail when prompted.
+7. Copy the Web app URL (ends with `/exec`).
+8. GitHub repo **Settings → Secrets and variables → Actions** → secret named `VITE_GAS_WEBAPP_URL` = that URL.
+9. Re-run **Deploy to GitHub Pages** (or push a commit) so the site rebuilds with the secret.
 
-Until the secret exists, the live site shows an **Under construction** contact panel with mailto/phone CTAs instead of the attachment form.
+Locally: copy `.env.example` to `.env`, set the same URL, `npm run dev`.
+
+## Flow
+
+```text
+Visitor form (+ files)
+  → POST JSON to Apps Script /exec
+  → GmailApp sends from unlimitedcopies07@gmail.com
+  → To: ulc@actrix.co.nz
+  → Reply-To: visitor’s email
+```
 
 ## Test
 
-- Opening the `/exec` URL in a browser should return JSON from `doGet`.
-- After the secret is set and the site is rebuilt, submit the contact form with a small PDF and confirm mail arrives at `ulc@actrix.co.nz`.
+1. Open the `/exec` URL in a browser → JSON with `"ok": true`.
+2. Submit the site form with a small PDF → mail arrives at **ulc@actrix.co.nz**.
+3. Reply from Actrix should go to the visitor (Reply-To).
 
 ## Notes
 
-- The browser sends `Content-Type: text/plain` so the request stays a simple CORS request.
-- Attachment total size is capped (~6–7 MB) on both the site and the script.
-- Reply-To is set to the visitor’s email so you can reply directly from Gmail.
-- The `/exec` URL is embedded in the static JS at build time (normal for `VITE_*` vars). Protect the script with validation in `Code.gs`; rotate the deployment if the URL is ever abused.
+- Browser uses `Content-Type: text/plain` to avoid CORS preflight issues.
+- Attachment total ~6–7 MB max.
+- Rotate the deployment URL if it is ever abused.

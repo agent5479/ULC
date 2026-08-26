@@ -17,7 +17,9 @@ export const BUSINESS = {
   },
   phoneDisplay: '03 525 8355',
   phoneE164: '+6435258355',
-  email: 'ulc@actrix.co.nz',
+    email: 'ulc@actrix.co.nz',
+  /** Apps Script / Gmail sending account (not shown as public contact) */
+  mailGateway: 'unlimitedcopies07@gmail.com',
   facebook: 'https://www.facebook.com/p/Unlimited-Copies-100050000846281/',
   hours: {
     weekdays: 'Monday–Friday 9:00 AM – 5:00 PM',

@@ -1,5 +1,5 @@
-import { useId, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useId, useMemo, useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import {
   ACCEPTED_FILE_TYPES,
   BUSINESS,
@@ -14,6 +14,12 @@ type FilePayload = {
   name: string
   mimeType: string
   data: string
+}
+
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`
+  return `${(n / (1024 * 1024)).toFixed(1)} MB`
 }
 
 function readFileAsBase64(file: File): Promise<FilePayload> {
@@ -38,13 +44,34 @@ export function ContactForm() {
   const formId = useId()
   const [status, setStatus] = useState<Status>('idle')
   const [errorMessage, setErrorMessage] = useState('')
-  const [files, setFiles] = useState<FileList | null>(null)
+  const [files, setFiles] = useState<File[]>([])
+
+  const totalBytes = useMemo(
+    () => files.reduce((sum, f) => sum + f.size, 0),
+    [files],
+  )
+
+  function onFilesChange(event: ChangeEvent<HTMLInputElement>) {
+    const next = event.target.files ? Array.from(event.target.files) : []
+    setFiles((prev) => {
+      const merged = [...prev]
+      for (const file of next) {
+        if (!merged.some((f) => f.name === file.name && f.size === file.size)) {
+          merged.push(file)
+        }
+      }
+      return merged.slice(0, 8)
+    })
+    event.target.value = ''
+  }
+
+  function removeFile(index: number) {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setErrorMessage('')
-
-    if (!FORM_LIVE) return
 
     const form = event.currentTarget
     const formData = new FormData(form)
@@ -59,8 +86,6 @@ export function ContactForm() {
       return
     }
 
-    const selected = files ? Array.from(files) : []
-    const totalBytes = selected.reduce((sum, f) => sum + f.size, 0)
     if (totalBytes > MAX_ATTACHMENTS_BYTES) {
       setStatus('error')
       setErrorMessage(
@@ -69,10 +94,18 @@ export function ContactForm() {
       return
     }
 
+    if (!FORM_LIVE) {
+      setStatus('error')
+      setErrorMessage(
+        `The mailer is not connected yet. Email ${BUSINESS.email} directly, or finish Apps Script setup (gateway ${BUSINESS.mailGateway}).`,
+      )
+      return
+    }
+
     setStatus('sending')
 
     try {
-      const attachments = await Promise.all(selected.map(readFileAsBase64))
+      const attachments = await Promise.all(files.map(readFileAsBase64))
       const payload = {
         name,
         email,
@@ -97,25 +130,25 @@ export function ContactForm() {
         if (typeof json.ok === 'boolean') ok = json.ok
         if (!ok && json.error) serverError = json.error
       } catch {
-        // Apps Script sometimes returns empty or HTML after redirect; treat HTTP ok as success
+        // Apps Script sometimes returns empty body after redirect
       }
 
       if (!ok) {
         setStatus('error')
         setErrorMessage(
           serverError ||
-            'Something went wrong sending your message. Please try again or email ulc@actrix.co.nz.',
+            `Something went wrong. Please email ${BUSINESS.email} instead.`,
         )
         return
       }
 
       setStatus('success')
       form.reset()
-      setFiles(null)
+      setFiles([])
     } catch {
       setStatus('error')
       setErrorMessage(
-        'Could not reach the mail service. Please email ulc@actrix.co.nz directly.',
+        `Could not reach the mail service. Please email ${BUSINESS.email} directly.`,
       )
     }
   }
@@ -124,88 +157,101 @@ export function ContactForm() {
     <section className="section contact" id="contact" aria-labelledby="contact-heading">
       <div className="section__inner contact__layout">
         <div className="contact__intro">
-          <p className="eyebrow">Get in touch</p>
+          <p className="eyebrow">Contact</p>
           <h2 id="contact-heading">Send a job or enquiry</h2>
           <p className="lede">
-            Prefer email for artwork and documents —{' '}
-            <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
-            {' · '}
-            <a href={`tel:${BUSINESS.phoneE164}`}>{BUSINESS.phoneDisplay}</a>
+            Attach artwork or documents and we’ll get back to you. Messages go to{' '}
+            <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>.
           </p>
+
+          <ul className="contact__direct">
+            <li>
+              <span>Email</span>
+              <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
+            </li>
+            <li>
+              <span>Phone</span>
+              <a href={`tel:${BUSINESS.phoneE164}`}>{BUSINESS.phoneDisplay}</a>
+            </li>
+            <li>
+              <span>Hours</span>
+              <span>{BUSINESS.hours.weekdays}</span>
+            </li>
+          </ul>
         </div>
 
-        {!FORM_LIVE ? (
-          <div className="contact-panel contact-panel--wip">
-            <p className="wip-badge">Under construction</p>
-            <h3>Online form coming soon</h3>
-            <p>
-              The attachment form will go live once the shop’s Google Apps Script mailer
-              is connected via GitHub Secrets. Until then, email or call us directly.
+        <form className="contact-form" onSubmit={onSubmit} noValidate>
+          <div className="contact-form__head">
+            <h3>Enquiry form</h3>
+            <p>PDF, images, and common Office files welcome.</p>
+          </div>
+
+          {!FORM_LIVE && (
+            <p className="form-status form-status--warn" role="status">
+              Mail gateway pending — form UI is ready; connect Apps Script (
+              {BUSINESS.mailGateway} → {BUSINESS.email}) to go live.
             </p>
-            <div className="hero__actions">
-              <a className="btn btn--primary" href={`mailto:${BUSINESS.email}`}>
-                Email {BUSINESS.email}
-              </a>
-              <a className="btn btn--outline" href={`tel:${BUSINESS.phoneE164}`}>
-                Call {BUSINESS.phoneDisplay}
-              </a>
+          )}
+
+          <div className="field">
+            <label htmlFor={`${formId}-name`}>Name</label>
+            <input
+              id={`${formId}-name`}
+              name="name"
+              type="text"
+              autoComplete="name"
+              required
+              disabled={status === 'sending'}
+              placeholder="Your name"
+            />
+          </div>
+
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor={`${formId}-email`}>Email</label>
+              <input
+                id={`${formId}-email`}
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                disabled={status === 'sending'}
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="field">
+              <label htmlFor={`${formId}-phone`}>
+                Phone <span className="optional">(optional)</span>
+              </label>
+              <input
+                id={`${formId}-phone`}
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                disabled={status === 'sending'}
+                placeholder="03 …"
+              />
             </div>
           </div>
-        ) : (
-          <form className="contact-form" onSubmit={onSubmit} noValidate>
-            <div className="field">
-              <label htmlFor={`${formId}-name`}>Name</label>
-              <input
-                id={`${formId}-name`}
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                disabled={status === 'sending'}
-              />
-            </div>
 
-            <div className="field-row">
-              <div className="field">
-                <label htmlFor={`${formId}-email`}>Email</label>
-                <input
-                  id={`${formId}-email`}
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  disabled={status === 'sending'}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor={`${formId}-phone`}>
-                  Phone <span className="optional">(optional)</span>
-                </label>
-                <input
-                  id={`${formId}-phone`}
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  disabled={status === 'sending'}
-                />
-              </div>
-            </div>
+          <div className="field">
+            <label htmlFor={`${formId}-message`}>Message</label>
+            <textarea
+              id={`${formId}-message`}
+              name="message"
+              rows={5}
+              required
+              disabled={status === 'sending'}
+              placeholder="What do you need printed, scanned, or posted?"
+            />
+          </div>
 
-            <div className="field">
-              <label htmlFor={`${formId}-message`}>Message</label>
-              <textarea
-                id={`${formId}-message`}
-                name="message"
-                rows={6}
-                required
-                disabled={status === 'sending'}
-              />
-            </div>
-
-            <div className="field">
-              <label htmlFor={`${formId}-files`}>
-                Attachments <span className="optional">(optional, max ~6 MB total)</span>
-              </label>
+          <div className="field">
+            <span className="field-label" id={`${formId}-files-label`}>
+              Attachments{' '}
+              <span className="optional">(optional · max ~6 MB total)</span>
+            </span>
+            <label className="file-drop" htmlFor={`${formId}-files`}>
               <input
                 id={`${formId}-files`}
                 name="files"
@@ -213,26 +259,63 @@ export function ContactForm() {
                 multiple
                 accept={ACCEPTED_FILE_TYPES}
                 disabled={status === 'sending'}
-                onChange={(e) => setFiles(e.target.files)}
+                onChange={onFilesChange}
+                aria-labelledby={`${formId}-files-label`}
               />
-            </div>
+              <span className="file-drop__title">Add files</span>
+              <span className="file-drop__hint">
+                Click to browse · PDF, JPG, PNG, Word, Excel…
+              </span>
+            </label>
 
-            {status === 'success' && (
-              <p className="form-status form-status--ok" role="status">
-                Thanks — your message is on its way to {BUSINESS.email}.
-              </p>
+            {files.length > 0 && (
+              <ul className="file-list">
+                {files.map((file, index) => (
+                  <li key={`${file.name}-${file.size}-${index}`}>
+                    <span className="file-list__name">{file.name}</span>
+                    <span className="file-list__meta">{formatBytes(file.size)}</span>
+                    <button
+                      type="button"
+                      className="file-list__remove"
+                      onClick={() => removeFile(index)}
+                      disabled={status === 'sending'}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+                <li className="file-list__total">
+                  Total {formatBytes(totalBytes)}
+                  {totalBytes > MAX_ATTACHMENTS_BYTES ? ' — over limit' : ''}
+                </li>
+              </ul>
             )}
-            {status === 'error' && (
-              <p className="form-status form-status--err" role="alert">
-                {errorMessage}
-              </p>
-            )}
+          </div>
 
-            <button className="btn btn--primary" type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Sending…' : 'Send message'}
+          {status === 'success' && (
+            <p className="form-status form-status--ok" role="status">
+              Thanks — your message is on its way to {BUSINESS.email}.
+            </p>
+          )}
+          {status === 'error' && (
+            <p className="form-status form-status--err" role="alert">
+              {errorMessage}
+            </p>
+          )}
+
+          <div className="contact-form__actions">
+            <button
+              className="btn btn--primary"
+              type="submit"
+              disabled={status === 'sending' || totalBytes > MAX_ATTACHMENTS_BYTES}
+            >
+              {status === 'sending' ? 'Sending…' : 'Send with attachments'}
             </button>
-          </form>
-        )}
+            <a className="btn btn--outline" href={`mailto:${BUSINESS.email}`}>
+              Or email directly
+            </a>
+          </div>
+        </form>
       </div>
     </section>
   )

@@ -1,21 +1,32 @@
 /**
  * Unlimited Copies Takaka — contact form mailer
  *
+ * IMPORTANT: Create and deploy this project while signed in as
+ *   unlimitedcopies07@gmail.com
+ * That account is the sending gateway. Mail is delivered to ulc@actrix.co.nz.
+ *
  * Deploy:
- * 1. https://script.google.com → New project
- * 2. Paste this file into Code.gs
+ * 1. Sign in to https://script.google.com as unlimitedcopies07@gmail.com
+ * 2. New project → paste this Code.gs
  * 3. Deploy → New deployment → Web app
- *    - Execute as: Me
+ *    - Execute as: Me (unlimitedcopies07@gmail.com)
  *    - Who has access: Anyone
- * 4. Copy the Web app URL into the site .env as VITE_GAS_WEBAPP_URL
+ * 4. Copy the /exec URL → GitHub secret VITE_GAS_WEBAPP_URL → redeploy Pages
  */
 
 var TO_EMAIL = 'ulc@actrix.co.nz';
+var GATEWAY_EMAIL = 'unlimitedcopies07@gmail.com';
+var FROM_NAME = 'Unlimited Copies Takaka';
 var MAX_FILES = 8;
 var MAX_TOTAL_BYTES = 7 * 1024 * 1024;
 
 function doGet() {
-  return json_({ ok: true, service: 'Unlimited Copies Takaka contact form' });
+  return json_({
+    ok: true,
+    service: 'Unlimited Copies Takaka contact form',
+    gateway: GATEWAY_EMAIL,
+    to: TO_EMAIL,
+  });
 }
 
 function doPost(e) {
@@ -40,11 +51,12 @@ function doPost(e) {
     }
 
     if (!Array.isArray(files) || files.length > MAX_FILES) {
-      return json_({ ok: false, error: 'Too many attachments' });
+      return json_({ ok: false, error: 'Too many attachments (max ' + MAX_FILES + ')' });
     }
 
     var attachments = [];
     var totalBytes = 0;
+    var fileNames = [];
 
     for (var i = 0; i < files.length; i++) {
       var f = files[i] || {};
@@ -56,14 +68,15 @@ function doPost(e) {
       var bytes = Utilities.base64Decode(b64);
       totalBytes += bytes.length;
       if (totalBytes > MAX_TOTAL_BYTES) {
-        return json_({ ok: false, error: 'Attachments exceed size limit' });
+        return json_({ ok: false, error: 'Attachments exceed size limit (~6 MB)' });
       }
       attachments.push(Utilities.newBlob(bytes, mimeType, fileName));
+      fileNames.push(fileName);
     }
 
-    var subject = 'Website enquiry from ' + name;
+    var subject = '[Website] Enquiry from ' + name;
     var body =
-      'New message from the Unlimited Copies Takaka website\n\n' +
+      'New message from unlimitedcopies.co.nz\n\n' +
       'Name: ' +
       name +
       '\n' +
@@ -73,31 +86,50 @@ function doPost(e) {
       'Phone: ' +
       (phone || '(not provided)') +
       '\n' +
+      'Attachments: ' +
+      (fileNames.length ? fileNames.join(', ') : '(none)') +
+      '\n' +
       'Sent: ' +
       (data.sentAt || new Date().toISOString()) +
+      '\n' +
+      'Gateway: ' +
+      GATEWAY_EMAIL +
+      ' → ' +
+      TO_EMAIL +
       '\n\n' +
       'Message:\n' +
       message +
       '\n';
 
     var html =
-      '<p><strong>New message from the Unlimited Copies Takaka website</strong></p>' +
+      '<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#1a1a1a">' +
+      '<p style="margin:0 0 12px;padding:10px 12px;background:#c8102e;color:#fff;font-weight:bold">' +
+      'Unlimited Copies Takaka — website enquiry</p>' +
       '<p><strong>Name:</strong> ' +
       escapeHtml_(name) +
       '<br>' +
-      '<strong>Email:</strong> ' +
+      '<strong>Email:</strong> <a href="mailto:' +
       escapeHtml_(email) +
-      '<br>' +
+      '">' +
+      escapeHtml_(email) +
+      '</a><br>' +
       '<strong>Phone:</strong> ' +
       escapeHtml_(phone || '(not provided)') +
+      '<br>' +
+      '<strong>Attachments:</strong> ' +
+      escapeHtml_(fileNames.length ? fileNames.join(', ') : '(none)') +
       '</p>' +
-      '<p>' +
+      '<p style="white-space:pre-wrap;border-left:3px solid #c8102e;padding-left:12px">' +
       escapeHtml_(message).replace(/\n/g, '<br>') +
-      '</p>';
+      '</p>' +
+      '<p style="font-size:12px;color:#666">Sent via ' +
+      escapeHtml_(GATEWAY_EMAIL) +
+      ' · Reply goes to the customer</p>' +
+      '</div>';
 
     GmailApp.sendEmail(TO_EMAIL, subject, body, {
       replyTo: email,
-      name: name,
+      name: FROM_NAME,
       htmlBody: html,
       attachments: attachments,
     });

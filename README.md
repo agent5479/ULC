@@ -14,17 +14,12 @@ Marketing site for **Unlimited Copies Takaka** — commercial printer and postal
 
 ## Contact form status
 
-The attachment form stays **under construction** until `VITE_GAS_WEBAPP_URL` is set. Email and phone remain live on the page.
+Form UI is live on the site. Sending needs the Apps Script gateway:
 
-### Enable the form (when the client provides Google login)
+- **From (gateway):** unlimitedcopies07@gmail.com  
+- **To (shop inbox):** ulc@actrix.co.nz  
 
-1. Deploy the Apps Script web app — see [`apps-script/README.md`](./apps-script/README.md).
-2. In the GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**
-   - Name: `VITE_GAS_WEBAPP_URL`
-   - Value: the Apps Script `/exec` URL
-3. Re-run the deploy workflow (push to `main` or **Actions → Deploy to GitHub Pages → Run workflow**).
-
-Locally you can also put the same value in `.env` (from `.env.example`) for `npm run dev`.
+Deploy steps: [`apps-script/README.md`](./apps-script/README.md). Then set GitHub Actions secret `VITE_GAS_WEBAPP_URL` and redeploy.
 
 ## Local development
 
