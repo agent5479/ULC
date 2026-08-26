@@ -16,7 +16,7 @@ const meta = await sharp(src).metadata()
 const w = meta.width ?? 359
 const h = meta.height ?? 306
 /** Top mark (infinity) — clearer at tiny favicon sizes than full wordmark */
-const markHeight = Math.round(h * 0.58)
+const markHeight = Math.round(h * 0.48)
 
 async function fullLogoPng(size) {
   return sharp(src)
