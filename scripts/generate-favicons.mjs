@@ -70,8 +70,8 @@ fs.writeFileSync(
       short_name: 'ULC Takaka',
       description:
         'Commercial printer and postal pickup/drop-off in Takaka, Tasman.',
-      start_url: '/ULC/',
-      scope: '/ULC/',
+      start_url: '/',
+      scope: '/',
       display: 'standalone',
       background_color: '#ffffff',
       theme_color: '#c8102e',

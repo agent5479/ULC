@@ -1,7 +1,7 @@
 /** Swap logo by changing ACTIVE_LOGO to 1–6 */
 export const ACTIVE_LOGO = 1 as 1 | 2 | 3 | 4 | 5 | 6
 
-export const SITE_URL = 'https://agent5479.github.io/ULC'
+export const SITE_URL = 'https://unlimitedcopies.co.nz'
 export const SITE_NAME = 'Unlimited Copies Takaka'
 
 export const BUSINESS = {

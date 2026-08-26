@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://agent5479.github.io/ULC/sitemap.xml
+Sitemap: https://unlimitedcopies.co.nz/sitemap.xml

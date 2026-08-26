@@ -2,7 +2,7 @@
 
 Marketing site for **Unlimited Copies Takaka** — commercial printer and postal pickup/drop-off at 29 Commercial Street, Takaka.
 
-- Live (GitHub Pages): https://agent5479.github.io/ULC/
+- Live: https://unlimitedcopies.co.nz/
 - Email: ulc@actrix.co.nz
 - Phone: 03 525 8355
 
