@@ -46,7 +46,10 @@ Optimized assets live in `public/images` and `public/logos`. Originals (gitignor
 
 ```bash
 npm run optimize-images
+npm run generate-favicons
 ```
+
+Favicons are generated from `public/logos/logo1.png` (16/32/48, apple-touch 180, Android 192/512, plus `favicon.ico` and `site.webmanifest`).
 
 ## Build
 
