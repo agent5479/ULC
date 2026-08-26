@@ -25,7 +25,10 @@ export function Hero() {
         <h1 id="hero-heading" className="hero__title">
           {BUSINESS.name}
         </h1>
-        <p className="hero__tagline">{BUSINESS.tagline}</p>
+        <p className="hero__tagline">
+          {BUSINESS.tagline} — printing, scanning, and courier pickup at 29 Commercial
+          Street (not an RD address).
+        </p>
         <div className="hero__actions">
           <a className="btn btn--primary" href={`mailto:${BUSINESS.email}`}>
             Email {BUSINESS.email}

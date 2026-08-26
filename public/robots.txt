@@ -1,3 +1,10 @@
+# AI crawlers and search engines — all allowed
+# GPTBot, OAI-SearchBot, ChatGPT-User (OpenAI)
+# Google-Extended (Gemini / AI Mode)
+# ClaudeBot (Anthropic)
+# PerplexityBot, Perplexity-User
+# Applebot-Extended
+
 User-agent: *
 Allow: /
 

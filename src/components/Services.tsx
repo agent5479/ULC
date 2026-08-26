@@ -8,10 +8,11 @@ export function Services() {
     <section className="section services" id="services" aria-labelledby="services-heading">
       <div className="section__inner">
         <p className="eyebrow">What we do</p>
-        <h2 id="services-heading">Print shop services for Golden Bay</h2>
+        <h2 id="services-heading">What print and postal services do you offer in Takaka?</h2>
         <p className="lede">
-          From everyday copies to finished marketing pieces — plus a practical postal
-          pickup point when couriers charge more for Rural Delivery.
+          Unlimited Copies is the commercial print shop on Commercial Street for Golden Bay
+          — everyday copies through to finished marketing pieces, plus a practical courier
+          pickup point when Rural Delivery rates are too high.
         </p>
 
         <div className="services__grid">
@@ -28,11 +29,11 @@ export function Services() {
               />
             </picture>
             <div className="service-block__body">
-              <h3>Commercial printing</h3>
+              <h3>Commercial printing in Takaka</h3>
               <p>
-                Digital colour and black-and-white printing, photocopying, scanning,
-                laminating, and finishing — business cards, flyers, booklets, posters,
-                reports, and more.
+                Need printing in Takaka? We handle digital colour and black-and-white jobs,
+                photocopying, scanning, laminating, and finishing — business cards, flyers,
+                booklets, posters, reports, and more.
               </p>
               <ul>
                 <li>High-quality prints up to SRA3</li>
@@ -56,11 +57,11 @@ export function Services() {
               />
             </picture>
             <div className="service-block__body">
-              <h3>Postal pickup &amp; drop-off</h3>
+              <h3>Can I pick up courier parcels in Takaka?</h3>
               <p>
-                Use the shop as a courier pickup and drop-off point. A gold-coin fee
-                covers the service — and because we are not on Rural Delivery, you
-                often avoid the higher RD courier rates.
+                Yes — use the shop as a courier pickup and drop-off point during opening
+                hours. A gold-coin fee covers pickup use, and because we are on Commercial
+                Street (not Rural Delivery), you often avoid the higher RD courier rates.
               </p>
               <ul>
                 <li>Pickup &amp; drop-off during shop hours</li>

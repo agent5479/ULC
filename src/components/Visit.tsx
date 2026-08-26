@@ -11,9 +11,10 @@ export function Visit() {
       <div className="section__inner visit__layout">
         <div className="visit__copy">
           <p className="eyebrow">Find us</p>
-          <h2 id="visit-heading">Visit the shop</h2>
+          <h2 id="visit-heading">Where is Unlimited Copies in Takaka?</h2>
           <p className="lede">
-            Open weekdays on Commercial Street in the heart of Takaka.
+            We are at 29 Commercial Street in central Takaka — open weekdays 9:00 AM to
+            5:00 PM. Call, email, or drop in for printing, scanning, or postal pickup.
           </p>
 
           <dl className="visit__details">

@@ -52,3 +52,5 @@ Favicons are generated from `public/logos/logo1.png` (16/32/48, apple-touch 180,
 npm run build
 npm run preview
 ```
+
+See [SEO.md](./SEO.md) for AI-search / crawler notes (robots, prerender, llms.txt).
