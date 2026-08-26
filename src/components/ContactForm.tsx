@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import {
   ACCEPTED_FILE_TYPES,
@@ -50,6 +50,13 @@ export function ContactForm() {
     () => files.reduce((sum, f) => sum + f.size, 0),
     [files],
   )
+
+  const sending = status === 'sending'
+
+  useEffect(() => {
+    document.body.classList.toggle('form-sending', sending)
+    return () => document.body.classList.remove('form-sending')
+  }, [sending])
 
   function onFilesChange(event: ChangeEvent<HTMLInputElement>) {
     const next = event.target.files ? Array.from(event.target.files) : []
@@ -155,6 +162,31 @@ export function ContactForm() {
 
   return (
     <section className="section contact" id="contact" aria-labelledby="contact-heading">
+      {sending && (
+        <div
+          className="send-overlay"
+          role="alertdialog"
+          aria-busy="true"
+          aria-live="assertive"
+          aria-labelledby={`${formId}-sending-title`}
+          aria-describedby={`${formId}-sending-desc`}
+        >
+          <div className="send-overlay__card">
+            <div className="send-spinner" aria-hidden="true">
+              <span className="send-spinner__ring" />
+              <span className="send-spinner__plane" />
+            </div>
+            <p id={`${formId}-sending-title`} className="send-overlay__title">
+              Sending your enquiry
+            </p>
+            <p id={`${formId}-sending-desc`} className="send-overlay__desc">
+              Please wait — uploading your message
+              {files.length > 0 ? ' and attachments' : ''}…
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="section__inner contact__layout">
         <div className="contact__intro">
           <p className="eyebrow">Contact</p>
@@ -201,7 +233,7 @@ export function ContactForm() {
               type="text"
               autoComplete="name"
               required
-              disabled={status === 'sending'}
+              disabled={sending}
               placeholder="Your name"
             />
           </div>
@@ -215,7 +247,7 @@ export function ContactForm() {
                 type="email"
                 autoComplete="email"
                 required
-                disabled={status === 'sending'}
+                disabled={sending}
                 placeholder="you@example.com"
               />
             </div>
@@ -228,7 +260,7 @@ export function ContactForm() {
                 name="phone"
                 type="tel"
                 autoComplete="tel"
-                disabled={status === 'sending'}
+                disabled={sending}
                 placeholder="03 …"
               />
             </div>
@@ -241,7 +273,7 @@ export function ContactForm() {
               name="message"
               rows={5}
               required
-              disabled={status === 'sending'}
+              disabled={sending}
               placeholder="What do you need printed, scanned, or posted?"
             />
           </div>
@@ -258,7 +290,7 @@ export function ContactForm() {
                 type="file"
                 multiple
                 accept={ACCEPTED_FILE_TYPES}
-                disabled={status === 'sending'}
+                disabled={sending}
                 onChange={onFilesChange}
                 aria-labelledby={`${formId}-files-label`}
               />
@@ -278,7 +310,7 @@ export function ContactForm() {
                       type="button"
                       className="file-list__remove"
                       onClick={() => removeFile(index)}
-                      disabled={status === 'sending'}
+                      disabled={sending}
                     >
                       Remove
                     </button>
@@ -307,9 +339,9 @@ export function ContactForm() {
             <button
               className="btn btn--primary"
               type="submit"
-              disabled={status === 'sending' || totalBytes > MAX_ATTACHMENTS_BYTES}
+              disabled={sending || totalBytes > MAX_ATTACHMENTS_BYTES}
             >
-              {status === 'sending' ? 'Sending…' : 'Send with attachments'}
+              {sending ? 'Sending…' : 'Send with attachments'}
             </button>
             <a className="btn btn--outline" href={`mailto:${BUSINESS.email}`}>
               Or email directly
