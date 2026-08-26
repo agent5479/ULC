@@ -1,9 +1,11 @@
 import { ContactForm } from './components/ContactForm'
 import { Footer } from './components/Footer'
+import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Services } from './components/Services'
 import { Visit } from './components/Visit'
-import { BUSINESS, SITE_NAME, SITE_URL } from './config'
+import { BUSINESS, SITE_URL } from './config'
+import { LogoProvider } from './logoContext'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -41,7 +43,7 @@ const jsonLd = {
 
 export default function App() {
   return (
-    <>
+    <LogoProvider>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -49,18 +51,7 @@ export default function App() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <header className="site-header">
-        <div className="site-header__inner">
-          <a className="site-header__brand" href="#top" aria-label={SITE_NAME}>
-            {SITE_NAME}
-          </a>
-          <nav className="site-nav" aria-label="Primary">
-            <a href="#services">Services</a>
-            <a href="#visit">Visit</a>
-            <a href="#contact">Contact</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
       <main id="main">
         <Hero />
         <Services />
@@ -68,6 +59,6 @@ export default function App() {
         <ContactForm />
       </main>
       <Footer />
-    </>
+    </LogoProvider>
   )
 }

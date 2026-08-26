@@ -45,6 +45,10 @@ export const MAX_ATTACHMENTS_BYTES = 6 * 1024 * 1024
 export const ACCEPTED_FILE_TYPES =
   '.pdf,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv'
 
+/** Live when GitHub secret / local .env sets VITE_GAS_WEBAPP_URL */
+export const GAS_WEBAPP_URL = (import.meta.env.VITE_GAS_WEBAPP_URL ?? '').trim()
+export const FORM_LIVE = GAS_WEBAPP_URL.length > 0
+
 export function assetUrl(path: string): string {
   const base = import.meta.env.BASE_URL
   return `${base}${path.replace(/^\//, '')}`
