@@ -19,7 +19,27 @@ export const PAPERS: CatalogOption[] = [
   { id: 'recycled', label: 'Recycled' },
   { id: 'gloss', label: 'Photo / gloss' },
   { id: 'card', label: 'Card stock' },
+  { id: 'colour-paper', label: 'Colour paper' },
+  { id: 'colour-card', label: 'Colour card' },
 ]
+
+/** Stock colours shown when colour paper or colour card is selected */
+export const PAPER_COLOURS: CatalogOption[] = [
+  { id: 'yellow', label: 'Yellow' },
+  { id: 'blue', label: 'Blue' },
+  { id: 'green', label: 'Green' },
+  { id: 'pink', label: 'Pink' },
+  { id: 'cream', label: 'Cream' },
+  { id: 'orange', label: 'Orange' },
+  { id: 'lilac', label: 'Lilac' },
+  { id: 'red', label: 'Red' },
+  { id: 'grey', label: 'Grey' },
+  { id: 'other', label: 'Other (note below)' },
+]
+
+export function needsPaperColour(paperId: string): boolean {
+  return paperId === 'colour-paper' || paperId === 'colour-card'
+}
 
 export const SIZES: CatalogOption[] = [
   { id: 'a4', label: 'A4' },
@@ -50,6 +70,8 @@ export const FINISHING: CatalogOption[] = [
 export type PrintSelection = {
   jobType: string
   paper: string
+  /** Stock colour when paper is colour-paper or colour-card */
+  paperColour: string
   size: string
   colour: string
   sides: string
@@ -61,6 +83,7 @@ export type PrintSelection = {
 export const DEFAULT_SELECTION: PrintSelection = {
   jobType: 'copies',
   paper: 'plain',
+  paperColour: '',
   size: 'a4',
   colour: 'bw',
   sides: 'single',
@@ -93,10 +116,15 @@ export function formatPrintBrief(selection: PrintSelection): string {
       ? selection.finishing.map((id) => labelOf(FINISHING, id)).join(', ')
       : 'None'
 
+  let paperLine = labelOf(PAPERS, selection.paper)
+  if (needsPaperColour(selection.paper) && selection.paperColour) {
+    paperLine += ` — ${labelOf(PAPER_COLOURS, selection.paperColour)}`
+  }
+
   const lines = [
     'Print enquiry (from website selector):',
     `• Job: ${labelOf(JOB_TYPES, selection.jobType)}`,
-    `• Paper: ${labelOf(PAPERS, selection.paper)}`,
+    `• Paper: ${paperLine}`,
     `• Size: ${labelOf(SIZES, selection.size)}`,
     `• Print: ${labelOf(COLOURS, selection.colour)}, ${labelOf(SIDES, selection.sides)}`,
     `• Finishing: ${finish}`,

@@ -5,11 +5,13 @@ import {
   DEFAULT_SELECTION,
   FINISHING,
   JOB_TYPES,
+  PAPER_COLOURS,
   PAPERS,
   SIDES,
   SIZES,
   defaultsForJobType,
   formatPrintBrief,
+  needsPaperColour,
   type CatalogOption,
   type PrintSelection,
 } from '../printApp/catalog'
@@ -57,10 +59,25 @@ export function PrintSelector() {
   const [selection, setSelection] = useState<PrintSelection>(DEFAULT_SELECTION)
 
   function setJobType(jobType: string) {
+    setSelection((prev) => {
+      const next = {
+        ...prev,
+        jobType,
+        ...defaultsForJobType(jobType),
+      }
+      if (!needsPaperColour(next.paper)) next.paperColour = ''
+      else if (!next.paperColour) next.paperColour = PAPER_COLOURS[0]?.id ?? ''
+      return next
+    })
+  }
+
+  function setPaper(paper: string) {
     setSelection((prev) => ({
       ...prev,
-      jobType,
-      ...defaultsForJobType(jobType),
+      paper,
+      paperColour: needsPaperColour(paper)
+        ? prev.paperColour || PAPER_COLOURS[0]?.id || ''
+        : '',
     }))
   }
 
@@ -103,8 +120,26 @@ export function PrintSelector() {
             name="paper"
             options={PAPERS}
             value={selection.paper}
-            onChange={(paper) => setSelection((p) => ({ ...p, paper }))}
+            onChange={setPaper}
           />
+          {needsPaperColour(selection.paper) && (
+            <div className="print-select field">
+              <label htmlFor={`${formId}-paper-colour`}>Stock colour</label>
+              <select
+                id={`${formId}-paper-colour`}
+                value={selection.paperColour}
+                onChange={(e) =>
+                  setSelection((p) => ({ ...p, paperColour: e.target.value }))
+                }
+              >
+                {PAPER_COLOURS.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <ChipRail
             legend="Size"
             name="size"

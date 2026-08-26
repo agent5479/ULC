@@ -589,6 +589,28 @@ li + li {
   color: var(--white);
 }
 
+.print-select {
+  max-width: 18rem;
+  margin-top: -0.35rem;
+}
+
+.print-select select,
+.field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  color: var(--ink);
+  background: #fafafa;
+}
+
+.print-select select:focus,
+.field select:focus {
+  outline: 2px solid rgba(200, 16, 46, 0.3);
+  border-color: var(--red);
+}
+
 .print-qty {
   display: flex;
   flex-wrap: wrap;
