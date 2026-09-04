@@ -48,8 +48,9 @@ fs.writeFileSync(
       short_name: 'ULC Takaka',
       description:
         'Commercial printer and postal pickup/drop-off in Takaka, Tasman.',
-      start_url: '/',
-      scope: '/',
+      id: 'https://unlimitedcopies.co.nz/',
+      start_url: 'https://unlimitedcopies.co.nz/',
+      scope: 'https://unlimitedcopies.co.nz/',
       display: 'standalone',
       background_color: '#ffffff',
       theme_color: '#c8102e',
