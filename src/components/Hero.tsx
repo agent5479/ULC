@@ -1,5 +1,5 @@
 import { assetUrl, BUSINESS, PHOTOS } from '../config'
-import { LogoCycleButton } from './LogoCycleButton'
+import { BrandLogo } from './BrandLogo'
 
 export function Hero() {
   const heroBase = assetUrl(PHOTOS.hero)
@@ -21,7 +21,7 @@ export function Hero() {
         <div className="hero__scrim" />
       </div>
       <div className="hero__content">
-        <LogoCycleButton className="hero__logo" width={280} height={280} size="hero" />
+        <BrandLogo className="hero__logo" width={560} height={200} />
         <h1 id="hero-heading" className="hero__title">
           {BUSINESS.name}
         </h1>

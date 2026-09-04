@@ -20,7 +20,7 @@ export function Services() {
               <source srcSet={`${printImg}.webp`} type="image/webp" />
               <img
                 src={`${printImg}.jpg`}
-                alt="Professional multifunction printers at Unlimited Copies Takaka"
+                alt="Colour and black-and-white Canon copiers at Unlimited Copies Takaka"
                 width={800}
                 height={1000}
                 loading="lazy"

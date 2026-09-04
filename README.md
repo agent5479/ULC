@@ -33,22 +33,16 @@ cp .env.example .env   # optional until Apps Script is ready
 npm run dev
 ```
 
-## Logo swap
-
-Click the logo in the **header** or **hero** to cycle through options 1–6. The choice is remembered in the browser (`localStorage`) for the showcase.
-
-To lock a final logo in code later, set `ACTIVE_LOGO` in [`src/config.ts`](./src/config.ts).
-
 ## Images
 
-Optimized assets live in `public/images` and `public/logos`. Originals (gitignored) can sit in `raw-assets/`. Re-run:
+Shop photos live in `public/images`; the wordmark is `public/logos/ulc-logo.png`. Re-run:
 
 ```bash
 npm run optimize-images
 npm run generate-favicons
 ```
 
-Favicons are generated from `public/logos/logo1.png` (16/32/48, apple-touch 180, Android 192/512, plus `favicon.ico` and `site.webmanifest`).
+`optimize-images` resizes photos to a 1600px max edge (JPEG + WebP) and writes a web-sized wordmark. Favicons are generated from `public/icons/printer.svg` (16/32/48, apple-touch 180, Android 192/512, plus `favicon.ico` and `site.webmanifest`).
 
 ## Build
 

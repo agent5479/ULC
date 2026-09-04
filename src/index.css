@@ -147,45 +147,29 @@ li + li {
   min-width: 0;
 }
 
-.logo-cycle {
-  appearance: none;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  cursor: pointer;
+.brand-logo {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
 }
 
-.logo-cycle:focus-visible {
+.brand-logo:focus-visible {
   outline: 2px solid var(--red);
   outline-offset: 3px;
 }
 
-.site-header__logo-btn img {
-  width: 48px;
-  height: 48px;
+.site-header__logo img {
+  height: 42px;
+  width: auto;
+  max-width: min(180px, 42vw);
   object-fit: contain;
-  background: var(--white);
-  flex-shrink: 0;
+  background: #000;
   transition: transform 0.2s var(--ease);
 }
 
-.site-header__logo-btn:hover img {
-  transform: scale(1.06);
-}
-
-.logo-cycle__hint {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(0, 0, 0, 0.45);
-  padding: 0.3rem 0.5rem;
+.site-header__logo:hover img {
+  transform: scale(1.04);
 }
 
 .site-header__brand-text {
@@ -414,7 +398,7 @@ li + li {
 }
 
 .hero__logo {
-  width: min(200px, 48vw);
+  width: min(280px, 70vw);
   margin-bottom: 1rem;
   animation: rise 0.95s var(--ease) 0.06s both;
 }
@@ -730,6 +714,14 @@ li + li {
 
 .more-shop__block ul {
   color: var(--ink-soft);
+}
+
+.more-shop__retail {
+  margin-top: 2rem;
+}
+
+.more-shop__retail img {
+  aspect-ratio: 16 / 10;
 }
 
 .more-shop__aside {

@@ -4,7 +4,7 @@ import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
 
 const root = path.resolve(import.meta.dirname, '..')
-const src = path.join(root, 'public', 'logos', 'logo1.png')
+const src = path.join(root, 'public', 'icons', 'printer.svg')
 const outDir = path.join(root, 'public')
 
 if (!fs.existsSync(src)) {
@@ -12,25 +12,8 @@ if (!fs.existsSync(src)) {
   process.exit(1)
 }
 
-const meta = await sharp(src).metadata()
-const w = meta.width ?? 359
-const h = meta.height ?? 306
-/** Top mark (infinity) — clearer at tiny favicon sizes than full wordmark */
-const markHeight = Math.round(h * 0.48)
-
-async function fullLogoPng(size) {
+async function iconPng(size) {
   return sharp(src)
-    .resize(size, size, {
-      fit: 'contain',
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
-    })
-    .png({ compressionLevel: 9 })
-    .toBuffer()
-}
-
-async function markPng(size) {
-  return sharp(src)
-    .extract({ left: 0, top: 0, width: w, height: markHeight })
     .resize(size, size, {
       fit: 'contain',
       background: { r: 255, g: 255, b: 255, alpha: 1 },
@@ -40,25 +23,20 @@ async function markPng(size) {
 }
 
 const outputs = [
-  { name: 'favicon-16x16.png', size: 16, mark: true },
-  { name: 'favicon-32x32.png', size: 32, mark: true },
-  { name: 'favicon-48x48.png', size: 48, mark: true },
-  { name: 'apple-touch-icon.png', size: 180, mark: false },
-  { name: 'android-chrome-192x192.png', size: 192, mark: false },
-  { name: 'android-chrome-512x512.png', size: 512, mark: false },
+  { name: 'favicon-16x16.png', size: 16 },
+  { name: 'favicon-32x32.png', size: 32 },
+  { name: 'favicon-48x48.png', size: 48 },
+  { name: 'apple-touch-icon.png', size: 180 },
+  { name: 'android-chrome-192x192.png', size: 192 },
+  { name: 'android-chrome-512x512.png', size: 512 },
 ]
 
-for (const { name, size, mark } of outputs) {
-  const buf = mark ? await markPng(size) : await fullLogoPng(size)
-  fs.writeFileSync(path.join(outDir, name), buf)
-  console.log('Wrote', name, mark ? '(mark)' : '(full)')
+for (const { name, size } of outputs) {
+  fs.writeFileSync(path.join(outDir, name), await iconPng(size))
+  console.log('Wrote', name)
 }
 
-const icoBuf = await pngToIco([
-  await markPng(16),
-  await markPng(32),
-  await markPng(48),
-])
+const icoBuf = await pngToIco([await iconPng(16), await iconPng(32), await iconPng(48)])
 fs.writeFileSync(path.join(outDir, 'favicon.ico'), icoBuf)
 console.log('Wrote favicon.ico')
 

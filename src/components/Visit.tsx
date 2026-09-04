@@ -56,7 +56,7 @@ export function Visit() {
             <source srcSet={`${visitImg}.webp`} type="image/webp" />
             <img
               src={`${visitImg}.jpg`}
-              alt="Service counter and print area inside Unlimited Copies Takaka"
+              alt="Looking into Unlimited Copies from the entrance on Commercial Street, Takaka"
               width={1200}
               height={900}
               loading="lazy"

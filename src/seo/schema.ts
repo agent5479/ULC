@@ -1,4 +1,4 @@
-import { BUSINESS, SITE_URL, logoUrl } from '../config'
+import { BUSINESS, LOGO_SRC, SITE_URL } from '../config'
 
 const PRINTING_SERVICE_ID = `${SITE_URL}/#commercial-printing`
 const POSTAL_SERVICE_ID = `${SITE_URL}/#postal-pickup`
@@ -15,8 +15,8 @@ export function getJsonLdGraph() {
     url: SITE_URL,
     email: BUSINESS.email,
     telephone: BUSINESS.phoneE164,
-    image: `${SITE_URL}/images/counter.jpg`,
-    logo: `${SITE_URL}${logoUrl()}`,
+    image: `${SITE_URL}/images/shop-wide.jpg`,
+    logo: `${SITE_URL}${LOGO_SRC}`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: BUSINESS.address.street,

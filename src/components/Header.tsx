@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BUSINESS, SITE_NAME } from '../config'
-import { LogoCycleButton } from './LogoCycleButton'
+import { BrandLogo } from './BrandLogo'
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -26,7 +26,7 @@ export function Header() {
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`} data-site-header>
       <div className="site-header__inner">
         <div className="site-header__brand">
-          <LogoCycleButton className="site-header__logo-btn" width={48} height={48} />
+          <BrandLogo className="site-header__logo" width={220} height={48} />
           <a
             className="site-header__brand-link"
             href="#top"

@@ -1,6 +1,3 @@
-/** Swap logo by changing ACTIVE_LOGO to 1–6 */
-export const ACTIVE_LOGO = 1 as 1 | 2 | 3 | 4 | 5 | 6
-
 export const SITE_URL = 'https://unlimitedcopies.co.nz'
 export const SITE_NAME = 'Unlimited Copies Takaka'
 
@@ -35,10 +32,11 @@ export const BUSINESS = {
 } as const
 
 export const PHOTOS = {
-  hero: 'images/counter',
-  services: 'images/copiers',
-  postal: 'images/equipment',
-  visit: 'images/service-desk',
+  hero: 'images/shop-wide',
+  services: 'images/copiers-both-colour-and-grayscale',
+  postal: 'images/courier',
+  visit: 'images/entranceway',
+  vacuum: 'images/vacuum-bags',
 } as const
 
 /** Max total decoded attachment size (bytes) before base64 inflation */
@@ -66,6 +64,4 @@ export function assetUrl(path: string): string {
   return `${base}${path.replace(/^\//, '')}`
 }
 
-export function logoUrl(id: typeof ACTIVE_LOGO = ACTIVE_LOGO): string {
-  return assetUrl(`logos/logo${id}.png`)
-}
+export const LOGO_SRC = assetUrl('logos/ulc-logo.png')

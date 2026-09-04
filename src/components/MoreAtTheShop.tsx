@@ -4,15 +4,16 @@ const GB_WEEKLY_URL = 'https://www.gbweekly.co.nz/'
 
 export function MoreAtTheShop() {
   const postalImg = assetUrl(PHOTOS.postal)
+  const vacuumImg = assetUrl(PHOTOS.vacuum)
 
   return (
     <section className="section more-shop" id="more" aria-labelledby="more-heading">
       <div className="section__inner">
         <p className="eyebrow">Also at the shop</p>
-        <h2 id="more-heading">Courier pickup, GB Weekly &amp; the local directory</h2>
+        <h2 id="more-heading">Courier pickup, vacuum bags &amp; community services</h2>
         <p className="lede">
-          Beyond printing, Unlimited Copies is a handy town address for parcels and a few local
-          community services.
+          Beyond printing, Unlimited Copies is a handy town address for parcels, replacement
+          vacuum bags, and a few local community services.
         </p>
 
         <div className="more-shop__grid">
@@ -21,7 +22,7 @@ export function MoreAtTheShop() {
               <source srcSet={`${postalImg}.webp`} type="image/webp" />
               <img
                 src={`${postalImg}.jpg`}
-                alt="Print equipment and Post Haste courier signage in the shop"
+                alt="New Zealand Couriers van used for parcel pickup and drop-off at Unlimited Copies Takaka"
                 width={800}
                 height={1000}
                 loading="lazy"
@@ -77,6 +78,29 @@ export function MoreAtTheShop() {
             </article>
           </div>
         </div>
+
+        <article className="more-shop__block more-shop__retail" id="vacuum-bags">
+          <picture>
+            <source srcSet={`${vacuumImg}.webp`} type="image/webp" />
+            <img
+              src={`${vacuumImg}.jpg`}
+              alt="Vacuum cleaner bags and filters on display at Unlimited Copies Takaka, including vac-pac and Miele"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <div>
+            <h3>Vacuum cleaner bags</h3>
+            <p>
+              We stock replacement vacuum bags and filters at the shop — including{' '}
+              <strong>vac-pac</strong>, <strong>Miele</strong>, and other common brands. Bring
+              the model or an old bag and we can match it, or drop in to see what is on the
+              shelf.
+            </p>
+          </div>
+        </article>
       </div>
     </section>
   )

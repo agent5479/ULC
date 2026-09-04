@@ -7,26 +7,23 @@ import { PrintSelector } from './components/PrintSelector'
 import { Services } from './components/Services'
 import { Visit } from './components/Visit'
 import { EnquiryProvider } from './enquiryContext'
-import { LogoProvider } from './logoContext'
 
 export default function App() {
   return (
-    <LogoProvider>
-      <EnquiryProvider>
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <Header />
-        <main id="main">
-          <Hero />
-          <Services />
-          <PrintSelector />
-          <Visit />
-          <ContactForm />
-          <MoreAtTheShop />
-        </main>
-        <Footer />
-      </EnquiryProvider>
-    </LogoProvider>
+    <EnquiryProvider>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Header />
+      <main id="main">
+        <Hero />
+        <Services />
+        <PrintSelector />
+        <Visit />
+        <ContactForm />
+        <MoreAtTheShop />
+      </main>
+      <Footer />
+    </EnquiryProvider>
   )
 }
