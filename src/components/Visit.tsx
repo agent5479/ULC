@@ -13,8 +13,8 @@ export function Visit() {
           <p className="eyebrow">Find us</p>
           <h2 id="visit-heading">Where is Unlimited Copies in Takaka?</h2>
           <p className="lede">
-            We are at 29 Commercial Street in central Takaka — open weekdays 9:00 AM to
-            5:00 PM. Call, email, or drop in for printing and scanning.
+            We are at {BUSINESS.address.street} in central {BUSINESS.address.locality} — open
+            weekdays 9:00 AM to 5:00 PM. Call, email, or drop in for printing and scanning.
           </p>
 
           <dl className="visit__details">

@@ -14,7 +14,7 @@ export const BUSINESS = {
   },
   phoneDisplay: '03 525 8355',
   phoneE164: '+6435258355',
-    email: 'ulc@actrix.co.nz',
+  email: 'ulc@actrix.co.nz',
   /** Apps Script / Gmail sending account (not shown as public contact) */
   mailGateway: 'unlimitedcopies07@gmail.com',
   facebook: 'https://www.facebook.com/p/Unlimited-Copies-100050000846281/',
@@ -30,6 +30,19 @@ export const BUSINESS = {
     ],
   },
 } as const
+
+/** Display helpers so NAP strings stay consistent across the page */
+export function streetLocality(): string {
+  return `${BUSINESS.address.street}, ${BUSINESS.address.locality}`
+}
+
+export function fullStreetAddress(): string {
+  return `${BUSINESS.address.street}, ${BUSINESS.address.locality} ${BUSINESS.address.postalCode}`
+}
+
+export function careOfShopAddress(): string {
+  return `c/o Unlimited Copies, ${BUSINESS.address.street}, ${BUSINESS.address.locality}`
+}
 
 export const PHOTOS = {
   hero: 'images/shop-wide',

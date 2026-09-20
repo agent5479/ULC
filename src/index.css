@@ -481,10 +481,22 @@ li + li {
   align-items: center;
 }
 
+.service-block--text {
+  max-width: 40rem;
+}
+
+.service-block--text .service-block__body h3 {
+  margin-top: 0;
+}
+
 @media (min-width: 840px) {
-  .service-block {
+  .service-block:not(.service-block--text) {
     grid-template-columns: 1.05fr 1fr;
     gap: 2.25rem;
+  }
+
+  .services__grid {
+    gap: clamp(2.5rem, 5vw, 4rem);
   }
 
   .service-block--reverse picture {
@@ -515,6 +527,12 @@ li + li {
 /* —— Print enquiry selector —— */
 .print-app {
   background: var(--page);
+}
+
+.print-app__static {
+  max-width: 40rem;
+  color: var(--ink-soft);
+  margin: 0.75rem 0 0;
 }
 
 .print-app__panel {
@@ -674,28 +692,19 @@ li + li {
   color: var(--muted);
 }
 
-/* —— More at the shop —— */
+/* —— More at the shop (courier / vacuum / community) —— */
 .more-shop {
   background: var(--page);
 }
 
-.more-shop__grid {
-  display: grid;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-@media (min-width: 900px) {
-  .more-shop__grid {
-    grid-template-columns: 1.35fr 0.85fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
+.more-shop--alt {
+  background: var(--white);
 }
 
 .more-shop__block {
   display: grid;
   gap: 1.25rem;
+  margin-top: 2rem;
 }
 
 @media (min-width: 640px) {
@@ -724,9 +733,17 @@ li + li {
   aspect-ratio: 16 / 10;
 }
 
-.more-shop__aside {
+.more-shop__community {
   display: grid;
   gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 720px) {
+  .more-shop__community {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
 }
 
 .more-shop__note {
@@ -735,27 +752,16 @@ li + li {
   padding: 1.15rem 1.25rem;
 }
 
+.more-shop--alt .more-shop__note {
+  background: var(--page);
+}
+
 .more-shop__note h3 {
   font-size: 1.15rem;
 }
 
 .more-shop__note p:last-child {
   margin-bottom: 0;
-}
-
-.more-shop__note--quiet {
-  background: transparent;
-  border-style: dashed;
-}
-
-.more-shop__note--quiet h3 {
-  font-size: 1rem;
-  color: var(--ink-soft);
-}
-
-.more-shop__note--quiet p {
-  font-size: 0.95rem;
-  color: var(--muted);
 }
 
 .visit {
@@ -1199,8 +1205,16 @@ body.form-sending {
 .site-footer__links {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.15rem;
   font-weight: 600;
+}
+
+@media (min-width: 720px) {
+  .site-footer__links {
+    flex-direction: row;
+    max-width: 28rem;
+  }
 }
 
 .site-footer__copy {

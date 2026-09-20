@@ -106,6 +106,11 @@ export function PrintSelector() {
           Choose job type, paper, size, and finishing. We’ll fill the contact form message for
           you — prices can be confirmed in the shop (online pricelist coming later).
         </p>
+        <p className="print-app__static">
+          We print colour and black-and-white jobs up to SRA3, single or double sided, with
+          finishing options such as laminate, bind, staple, fold, and trim — including business
+          cards, posters, and photo-quality pieces.
+        </p>
 
         <div className="print-app__panel">
           <ChipRail

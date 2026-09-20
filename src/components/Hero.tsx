@@ -1,4 +1,4 @@
-import { assetUrl, BUSINESS, PHOTOS } from '../config'
+import { assetUrl, BUSINESS, PHOTOS, streetLocality } from '../config'
 import { BrandLogo } from './BrandLogo'
 
 export function Hero() {
@@ -26,8 +26,8 @@ export function Hero() {
           {BUSINESS.name}
         </h1>
         <p className="hero__tagline">
-          {BUSINESS.tagline} — copies, scanning, finishing, business cards, posters, and more at
-          29 Commercial Street, Takaka.
+          {BUSINESS.tagline} — copies, scanning, finishing, business cards, posters, and more at{' '}
+          {streetLocality()}.
         </p>
         <div className="hero__actions">
           <a className="btn btn--primary" href="#print">
